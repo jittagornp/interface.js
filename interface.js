@@ -147,7 +147,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {Object} prototype
      * 
      * @throws {Error} - invalid input type parameters
-     * @returns {Bridge} interface
+     * @returns {Interface} interface
      */
     Interface.define = function(name, prototype) {
         if (!isString(name) || !isObject(prototype)) {
@@ -175,9 +175,9 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         }
 
         /**
-         * for extends from SuperInterface to this interface
-         * @param {Bridge} SuperInterface
-         * @returns {Bridge} interface
+         * for extends from SuperInterfaces... to this interface
+         * @param {Interface} interfaces
+         * @returns {Interface} interface
          */
         Bridge.extends = function() {
             forEachProperty(__slice.call(arguments), function(interfc, index) {
