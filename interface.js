@@ -37,7 +37,7 @@
  * 
  * Interface.ensureImplements(UserServiceImpl, UserService); //not throw Error
  */
-window.Interface = window.Interface || (function(Array, Object) {
+window.Interface = window.Interface || (function(Array, Object, String, undefined) {
 
 
     // protect old browser not support method trim
@@ -217,10 +217,7 @@ window.Interface = window.Interface || (function(Array, Object) {
 
                     var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
                     var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
-
-                    console.log(interfaceArgs);
-                    console.log(classArgs);
-
+                    
                     if (interfaceArgs.length !== classArgs.length) {
                         throw new Error('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
                     }
@@ -255,4 +252,4 @@ window.Interface = window.Interface || (function(Array, Object) {
      */
     return Interface;
 
-}).call(this, Array, Object);
+}).call(this, Array, Object, String);
