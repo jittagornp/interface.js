@@ -40,17 +40,26 @@
 window.Interface = window.Interface || (function(Array, Object) {
 
 
+    // protect old browser not support method trim
+    if (!String.prototype.trim) {
+        String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, '');
+        };
+    }
+
+    //code from http://stackoverflow.com/questions/5767325/remove-specific-element-from-an-array
+    Array.prototype.remove = function(item) {
+        for (var i = this.length; i--; ) {
+            if (this[i] === item) {
+                this.splice(i, 1);
+            }
+        }
+    };
+
     var FuntionUtils = (function(String) {
 
         //This regex is from require.js
         var FUNCTION_ARGUMENT_REGEX_PATTERN = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
-
-        // protect old browser not support method trim
-        if (!String.prototype.trim) {
-            String.prototype.trim = function() {
-                return this.replace(/^\s+|\s+$/g, '');
-            };
-        }
 
         return {
             /**
@@ -75,6 +84,8 @@ window.Interface = window.Interface || (function(Array, Object) {
                 for (var i = 0; i < length; i++) {
                     args[i] = args[i].trim().replace('\n/**/', '');
                 }
+
+                args.remove('');
 
                 return args;
             }
@@ -200,16 +211,19 @@ window.Interface = window.Interface || (function(Array, Object) {
 
             forEachProperty(interfc.prototype, function(behavior, property) {
                 if (isFunction(behavior)) {
-                    if(!isFunction(classInstance[property])){
+                    if (!isFunction(classInstance[property])) {
                         throw new Error('it\'s not implements method ' + property + '() of interface "' + interfc.interfaceName + '".');
                     }
-                    
+
                     var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
                     var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
 
+                    console.log(interfaceArgs);
+                    console.log(classArgs);
+
                     if (interfaceArgs.length !== classArgs.length) {
                         throw new Error('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
-                    } 
+                    }
                 }
             });
         });
