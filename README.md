@@ -76,7 +76,7 @@ console.log(Interface.isImplements(ArrayList, List)); //false
 Interface.ensureImplements(ArrayList, Collection); //not throw Error
 
 Interface.ensureImplements(ArrayList, List); 
-//throw Error, because it's not implements method set(index, object) of Interface 'List'
+//throw Error: it's not implements method set() of interface "List".
 
 
 //implements method set
@@ -85,7 +85,7 @@ ArrayList.prototype.set = function(index){
 };
 
 Interface.ensureImplements(ArrayList, List); 
-//throw Error, because it's not implements arguments 'object' of method set(index, object) of Interface 'List'
+//throw Error: it's not implements arguments on method set(index, object) of interface "List".
 
 //new implements method set
 ArrayList.prototype.set = function(index, object){ //success
