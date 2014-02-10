@@ -4,6 +4,49 @@
  */
 window.Interface = window.Interface || (function(Array, Object) {
 
+
+    var FuntionUtils = (function(String) {
+
+        //This regex is from require.js
+        var FUNCTION_ARGUMENT_REGEX_PATTERN = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+
+        // protect old browser not support method trim
+        if (!String.prototype.trim) {
+            String.prototype.trim = function() {
+                return this.replace(/^\s+|\s+$/g, '');
+            };
+        }
+
+        return {
+            /**
+             * regular expression pattern for get arguments name in the function
+             */
+            FUNCTION_ARGUMENT_REGEX_PATTERN: FUNCTION_ARGUMENT_REGEX_PATTERN,
+            /**
+             * for get arguments name of input function parameter
+             * code from http://stackoverflow.com/questions/20058391/javascript-dependency-injection
+             *
+             * @param {Function} func
+             * @throws Error
+             * @returns {Array<String>} - array of arguments name
+             */
+            getArgumentsFromFunction: function(func) {
+                if (typeof func !== 'function') {
+                    throw new Error('FuntionUtils.getArgumentsFromFunction(Function func) require parameter is a function');
+                }
+
+                var args = func.toString().match(FUNCTION_ARGUMENT_REGEX_PATTERN)[1].split(',');
+                var length = args.length;
+                for (var i = 0; i < length; i++) {
+                    args[i] = args[i].trim().replace('\n/**/', '');
+                }
+
+                return args;
+            }
+        };
+    }).call(this, String);
+
+
     function is(data, type) {
         return Object.prototype.toString.call(data) === '[object ' + type + ']';
     }
@@ -67,13 +110,14 @@ window.Interface = window.Interface || (function(Array, Object) {
 
         forEachProperty(prototype, function(behavior, property) {
             if (isFunction(behavior)) {
-                Bridge.prototype[property] = function() {
-                    throw new Error('abstract method \'' + property + '\' of interface \'' + name + ' it\'s not implements.');
-                };
+                Bridge.prototype[property] = new Function(FuntionUtils.getArgumentsFromFunction(behavior), functionBody(property));
             }
         });
 
 
+        function functionBody(property) {
+            return "throw new Error('abstract method \\'" + property + "()\\' of interface \\'" + name + "\\' it\\'s not implements.')";
+        }
 
         /**
          * for extends from SuperInterface to this interface
@@ -113,8 +157,11 @@ window.Interface = window.Interface || (function(Array, Object) {
             }
 
             forEachProperty(interfc.prototype, function(behavior, property) {
-                if (isFunction(behavior) && !hasProperty(classInstance, property)) {
-                    throw new Error('it\'s not implements method ' + property + '() of interface "' + interfc.interfaceName + '".');
+                var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
+                var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
+
+                if ((isFunction(behavior) && !hasProperty(classInstance, property)) || interfaceArgs.length !== classArgs.length) {
+                    throw new Error('it\'s not implements method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
                 }
             });
         });
