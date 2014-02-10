@@ -176,7 +176,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
 
         /**
          * for extends from super interfaces... to this interface
-         * @param {Interface} interfaces
+         * @param {Interface} interfaces...
          * @returns {Interface} interface
          */
         Bridge.extends = function() {
