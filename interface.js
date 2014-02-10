@@ -199,25 +199,20 @@ window.Interface = window.Interface || (function(Array, Object) {
             }
 
             forEachProperty(interfc.prototype, function(behavior, property) {
-                var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
-                var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
+                if (isFunction(behavior)) {
+                    if(!isFunction(classInstance[property])){
+                        throw new Error('it\'s not implements method ' + property + '() of interface "' + interfc.interfaceName + '".');
+                    }
+                    
+                    var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
+                    var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
 
-                if ((isFunction(behavior) && !hasProperty(classInstance, property)) || interfaceArgs.length !== classArgs.length) {
-                    throw new Error('it\'s not implements method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
+                    if (interfaceArgs.length !== classArgs.length) {
+                        throw new Error('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
+                    } 
                 }
             });
         });
-
-        //protect prototype inheritance
-        function hasProperty(context, property) {
-            for (var prop in context) {
-                if (prop === property) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     };
 
 
