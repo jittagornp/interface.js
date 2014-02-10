@@ -2,8 +2,17 @@ interface.js
 ============
 
 for define and check implementation of interface javascript
-<h3>Define Interface</h3>
+<h3>Define interface</h3>
 ```js
+//Syntax
+var PROTOTYPE = {
+    //define prototype as a function
+};
+
+var MyInterface = Interface.define('INTERFACE_NAME', PROTOYPE);
+```
+```js
+//Example
 var Collection = Interface.define('Collection', {
 
     add : function(object){
@@ -15,8 +24,17 @@ var Collection = Interface.define('Collection', {
     }
 });
 ```
-<h3>Extends Interface</h3>
+<h3>Extends interface</h3>
 ```js
+//Syntax
+var MyInterface = Interface.define('INTERFACE_NAME', {
+
+   //define prototype as a function
+
+}).extends(Interface1, Interface2, Interface3, ..., InterfaceN) 
+```
+```js
+//Example
 var List = Interface.define('List', {
     
     get : function(index){
@@ -26,9 +44,12 @@ var List = Interface.define('List', {
     set : function(index, object){
     
     }
-}).extends(Collection);
+}).extends(Collection); //*****
+
+// you can extends multiple interfaces
+// use .extends(Interface1, Interface2, Interface3, ..., InterfaceN) 
 ```
-<h3>Implements Interface</h3>
+<h3>Implements interface</h3>
 ```js
 var ArrayList = function(){
 
