@@ -1,6 +1,10 @@
 /**
+ * for define and check implementation of interface javascript
+ *
  * @author jittagorn pitakmetagoon
  * create 10/02/2014
+ *
+ * License Apache License Version 2.0, January 2004
  */
 window.Interface = window.Interface || (function(Array, Object) {
 
@@ -79,7 +83,7 @@ window.Interface = window.Interface || (function(Array, Object) {
     }
 
     /**
-     * define global variable Interface
+     * define global Interface
      */
     var Interface = function() {
         //define interface
@@ -89,7 +93,7 @@ window.Interface = window.Interface || (function(Array, Object) {
     var __slice = Array.prototype.slice;
 
     /**
-     * public static method
+     * public static method for define Interface by interface name an interface prototype
      * 
      * @param {String} name
      * @param {Object} prototype
@@ -98,7 +102,7 @@ window.Interface = window.Interface || (function(Array, Object) {
      */
     Interface.define = function(name, prototype) {
         if (!isString(name) || !isObject(prototype)) {
-            throw new Error('Interface.define(String interfaceName, Object prototypeInterface)');
+            throw new Error('Interface.define(String name, Object prototype)');
         }
 
         var Bridge = function() {
@@ -141,10 +145,17 @@ window.Interface = window.Interface || (function(Array, Object) {
         return Bridge;
     };
 
-
+	/**
+	 * for ensure Class or class instance implements an interfaces
+	 * 
+	 * @param {Function | Object} class
+	 * @param {Interface} interfaces.. 
+	 *
+	 * @throws {Error}
+	 */	
     Interface.ensureImplements = function() {
         if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
-            throw new Error('Invalid input type paramters, Interface.ensureImplements(Class class, Interface interfaces...)');
+            throw new Error('Invalid input type paramters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...)');
         }
 
         var classInstance = isFunction(arguments[0]) ? arguments[0].prototype : arguments[0];
@@ -153,7 +164,7 @@ window.Interface = window.Interface || (function(Array, Object) {
         //implements multiple interfaces
         forEachProperty(interfaces, function(interfc, index) {
             if (!isFunction(interfc) || !(interfc.prototype instanceof Interface)) {
-                throw new Error('Interface.ensureImplements(Class class, Interface interfaces...) interfaces[' + index + '] is not "Interface".');
+                throw new Error('Interface.ensureImplements(<Function | Object> class, Interface interfaces...) interfaces[' + index + '] is not "Interface".');
             }
 
             forEachProperty(interfc.prototype, function(behavior, property) {
@@ -179,7 +190,14 @@ window.Interface = window.Interface || (function(Array, Object) {
     };
 
 
-
+	/**
+	 * for check Class or class instance implements an interfaces
+	 * 
+	 * @param {Function | Object} class
+	 * @param {Interface} interfaces.. 
+	 *
+	 * @return {Boolean}
+	 */	
     Interface.isImplements = function() {
         try {
             Interface.ensureImplements.apply(this, arguments);
@@ -191,6 +209,7 @@ window.Interface = window.Interface || (function(Array, Object) {
     };
 
 
+	
     /**
      * return Interface
      */
