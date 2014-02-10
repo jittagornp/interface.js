@@ -156,13 +156,14 @@ window.Interface = window.Interface || (function(Array, Object, String, undefine
 
         forEachProperty(prototype, function(behavior, property) {
             if (isFunction(behavior)) {
-                Bridge.prototype[property] = new Function(FuntionUtils.getArgumentsFromFunction(behavior), functionBody(property));
+                var args = FuntionUtils.getArgumentsFromFunction(behavior);
+                Bridge.prototype[property] = new Function(args, functionBody(property, args));
             }
         });
 
 
-        function functionBody(property) {
-            return "throw new Error('abstract method \\'" + property + "()\\' of interface \\'" + name + "\\' it\\'s not implements.')";
+        function functionBody(property, args) {
+            return "throw new Error('abstract method \\'" + property + "(" + args.join(', ') + ")\\' of interface \\'" + name + "\\' it\\'s not implements.')";
         }
 
         /**
