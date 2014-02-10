@@ -37,7 +37,7 @@
  * 
  * Interface.ensureImplements(UserServiceImpl, UserService); //not throw Error
  */
-window.Interface = window.Interface || (function(Array, Object, String, undefined) {
+window.Interface = window.Interface || (function(Array, Object, String, Function, Error, undefined) {
 
 
     // protect old browser not support method trim
@@ -56,7 +56,7 @@ window.Interface = window.Interface || (function(Array, Object, String, undefine
         }
     };
 
-    var FuntionUtils = (function(String) {
+    var FuntionUtils = (function() {
 
         //This regex is from require.js
         var FUNCTION_ARGUMENT_REGEX_PATTERN = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
@@ -90,7 +90,7 @@ window.Interface = window.Interface || (function(Array, Object, String, undefine
                 return args;
             }
         };
-    }).call(this, String);
+    }).call(this);
 
 
     function is(data, type) {
@@ -253,4 +253,4 @@ window.Interface = window.Interface || (function(Array, Object, String, undefine
      */
     return Interface;
 
-}).call(this, Array, Object, String);
+}).call(this, Array, Object, String, Function, Error);
