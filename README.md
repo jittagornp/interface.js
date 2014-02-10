@@ -51,6 +51,7 @@ var List = Interface.define('List', {
 ```
 <h3>Implements interface</h3>
 ```js
+//define class ArrayList
 var ArrayList = function(){
 
 };
