@@ -175,7 +175,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         }
 
         /**
-         * for extends from SuperInterfaces... to this interface
+         * for extends from super interfaces... to this interface
          * @param {Interface} interfaces
          * @returns {Interface} interface
          */
