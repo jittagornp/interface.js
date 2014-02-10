@@ -44,6 +44,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         //
     };
 
+    //extends an Error
     ImplementsException.prototype = new Error();
 
     // protect old browser not support method trim
@@ -61,43 +62,6 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
             }
         }
     };
-
-    var FuntionUtils = (function() {
-
-        //This regex is from require.js
-        var FUNCTION_ARGUMENT_REGEX_PATTERN = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
-
-        return {
-            /**
-             * regular expression pattern for get arguments name in the function
-             */
-            FUNCTION_ARGUMENT_REGEX_PATTERN: FUNCTION_ARGUMENT_REGEX_PATTERN,
-            /**
-             * for get arguments name of input function parameter
-             * code from http://stackoverflow.com/questions/20058391/javascript-dependency-injection
-             *
-             * @param {Function} func
-             * @throws Error
-             * @returns {Array<String>} - array of arguments name
-             */
-            getArgumentsFromFunction: function(func) {
-                if (typeof func !== 'function') {
-                    throw new Error('Invalid input type parameters, FuntionUtils.getArgumentsFromFunction(Function func) - func is not function.');
-                }
-
-                var args = func.toString().match(FUNCTION_ARGUMENT_REGEX_PATTERN)[1].split(',');
-                var length = args.length;
-                for (var i = 0; i < length; i++) {
-                    args[i] = args[i].trim().replace('\n/**/', '');
-                }
-
-                args.remove('');
-
-                return args;
-            }
-        };
-    }).call(this);
-
 
     function is(data, type) {
         return Object.prototype.toString.call(data) === '[object ' + type + ']';
@@ -118,6 +82,42 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
     function isObject(data) {
         return is(data, 'Object');
     }
+
+    var FuntionUtils = (function() {
+
+        //This regex is from require.js
+        var FUNCTION_ARGUMENT_REGEX_PATTERN = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
+
+        return {
+            /**
+             * regular expression pattern for get arguments name in the function
+             */
+            FUNCTION_ARGUMENT_REGEX_PATTERN: FUNCTION_ARGUMENT_REGEX_PATTERN,
+            /**
+             * for get arguments name of input function parameter
+             * code from http://stackoverflow.com/questions/20058391/javascript-dependency-injection
+             *
+             * @param {Function} func
+             * @throws Error
+             * @returns {Array<String>} - array of arguments name
+             */
+            getArgumentsFromFunction: function(func) {
+                if (!isFunction(func)) {
+                    throw new Error('Invalid input type parameters, FuntionUtils.getArgumentsFromFunction(Function func) - func is not function.');
+                }
+
+                var args = func.toString().match(FUNCTION_ARGUMENT_REGEX_PATTERN)[1].split(',');
+                var length = args.length;
+                for (var i = 0; i < length; i++) {
+                    args[i] = args[i].trim().replace('\n/**/', '');
+                }
+
+                args.remove('');
+
+                return args;
+            }
+        };
+    }).call(this);
 
     function forEachProperty(object, callback, context) {
         for (var property in object) {
@@ -146,6 +146,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {String} name
      * @param {Object} prototype
      * 
+     * @throws {Error} - invalid input type parameters
      * @returns {Bridge} interface
      */
     Interface.define = function(name, prototype) {
@@ -157,8 +158,9 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
             //define bridge
         };
 
+        //extends an Interface
         Bridge.prototype = new Interface();
-        Bridge.interfaceName = name;
+        Bridge.__interfaceName = name;
 
         forEachProperty(prototype, function(behavior, property) {
             if (isFunction(behavior)) {
@@ -200,7 +202,8 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {Function | Object} class
      * @param {Interface} interfaces.. 
      *
-     * @throws {Error}
+     * @throws {Error} - invalid input type parameters
+     * @throws {ImplementsException} 
      */
     Interface.ensureImplements = function() {
         if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
@@ -219,14 +222,14 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
             forEachProperty(interfc.prototype, function(behavior, property) {
                 if (isFunction(behavior)) {
                     if (!isFunction(classInstance[property])) {
-                        throw new ImplementsException('it\'s not implements method ' + property + '() of interface "' + interfc.interfaceName + '".');
+                        throw new ImplementsException('it\'s not implements method ' + property + '() of interface "' + interfc.__interfaceName + '".');
                     }
 
                     var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
                     var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
 
                     if (interfaceArgs.length !== classArgs.length) {
-                        throw new ImplementsException('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.interfaceName + '".');
+                        throw new ImplementsException('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.__interfaceName + '".');
                     }
                 }
             });
@@ -240,6 +243,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {Function | Object} class
      * @param {Interface} interfaces.. 
      *
+     * @throws {Error} - invalid input type parameters
      * @return {Boolean}
      */
     Interface.isImplements = function() {
