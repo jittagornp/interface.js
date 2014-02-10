@@ -76,7 +76,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
              */
             getArgumentsFromFunction: function(func) {
                 if (typeof func !== 'function') {
-                    throw new Error('FuntionUtils.getArgumentsFromFunction(Function func) require parameter is a function');
+                    throw new Error('Invalid input type paramters, FuntionUtils.getArgumentsFromFunction(Function func) - func is not a function.');
                 }
 
                 var args = func.toString().match(FUNCTION_ARGUMENT_REGEX_PATTERN)[1].split(',');
@@ -144,7 +144,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      */
     Interface.define = function(name, prototype) {
         if (!isString(name) || !isObject(prototype)) {
-            throw new Error('Interface.define(String name, Object prototype)');
+            throw new Error('Invalid input type paramters, Interface.define(String name, Object prototype).');
         }
 
         var Bridge = function() {
@@ -163,7 +163,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
 
 
         function functionBody(property, args) {
-            return "throw new Error('abstract method \\'" + property + "(" + args.join(', ') + ")\\' of interface \\'" + name + "\\' it\\'s not implements.')";
+            return "throw new Error('Abstract method \\'" + property + "(" + args.join(', ') + ")\\' of interface \\'" + name + "\\' it\\'s not implements.')";
         }
 
         /**
@@ -174,7 +174,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         Bridge.extends = function() {
             forEachProperty(__slice.call(arguments), function(interfc, index) {
                 if (!isFunction(interfc) || !(interfc.prototype instanceof Interface)) {
-                    throw new Error('Interface.extends(Interface interfaces...) interfaces[' + index + '] is not "Interface".');
+                    throw new Error('Invalid input type paramters, Interface.extends(Interface interfaces...) - interfaces[' + index + '] is not "Interface".');
                 }
 
                 forEachProperty(interfc.prototype, function(method, property) {
@@ -198,7 +198,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      */
     Interface.ensureImplements = function() {
         if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
-            throw new Error('Invalid input type paramters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...)');
+            throw new Error('Invalid input type paramters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...).');
         }
 
         var classInstance = isFunction(arguments[0]) ? arguments[0].prototype : arguments[0];
@@ -207,7 +207,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         //implements multiple interfaces
         forEachProperty(interfaces, function(interfc, index) {
             if (!isFunction(interfc) || !(interfc.prototype instanceof Interface)) {
-                throw new Error('Interface.ensureImplements(<Function | Object> class, Interface interfaces...) interfaces[' + index + '] is not "Interface".');
+                throw new Error('Invalid input type paramters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...) - interfaces[' + index + '] is not "Interface".');
             }
 
             forEachProperty(interfc.prototype, function(behavior, property) {
