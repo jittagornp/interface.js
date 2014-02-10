@@ -5,6 +5,37 @@
  * create 10/02/2014
  *
  * License Apache License Version 2.0, January 2004
+ * 
+ * =============================================================================
+ * example to use
+ * 
+ * var UserService = Interface.define('UserService', {
+ * 
+ *     save : function(user){
+ *     
+ *     }
+ * });
+ * 
+ * //define class
+ * var UserServiceImpl = function(){
+ * 
+ * };
+ * 
+ * //define method
+ * UserServiceImpl.prototype.save = function(){
+ * 
+ * };
+ * 
+ * Interface.ensureImplements(UserServiceImpl, UserService); 
+ * //will throw Error, it's not implements arguments user on save method
+ * 
+ * modify new
+ * -----------------------------------------------------------------------------
+ * UserServiceImpl.prototype.save = function(user){
+ * 
+ * };
+ * 
+ * Interface.ensureImplements(UserServiceImpl, UserService); //not throw Error
  */
 window.Interface = window.Interface || (function(Array, Object) {
 
@@ -145,14 +176,14 @@ window.Interface = window.Interface || (function(Array, Object) {
         return Bridge;
     };
 
-	/**
-	 * for ensure Class or class instance implements an interfaces
-	 * 
-	 * @param {Function | Object} class
-	 * @param {Interface} interfaces.. 
-	 *
-	 * @throws {Error}
-	 */	
+    /**
+     * for ensure Class or class instance implements an interfaces
+     * 
+     * @param {Function | Object} class
+     * @param {Interface} interfaces.. 
+     *
+     * @throws {Error}
+     */
     Interface.ensureImplements = function() {
         if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
             throw new Error('Invalid input type paramters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...)');
@@ -190,14 +221,14 @@ window.Interface = window.Interface || (function(Array, Object) {
     };
 
 
-	/**
-	 * for check Class or class instance implements an interfaces
-	 * 
-	 * @param {Function | Object} class
-	 * @param {Interface} interfaces.. 
-	 *
-	 * @return {Boolean}
-	 */	
+    /**
+     * for check Class or class instance implements an interfaces
+     * 
+     * @param {Function | Object} class
+     * @param {Interface} interfaces.. 
+     *
+     * @return {Boolean}
+     */
     Interface.isImplements = function() {
         try {
             Interface.ensureImplements.apply(this, arguments);
@@ -209,7 +240,7 @@ window.Interface = window.Interface || (function(Array, Object) {
     };
 
 
-	
+
     /**
      * return Interface
      */
