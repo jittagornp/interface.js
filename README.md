@@ -31,7 +31,7 @@ var MyInterface = Interface.define('INTERFACE_NAME', {
 
    //define prototype as a function
 
-}).extends(Interface1, Interface2, Interface3, ..., InterfaceN) 
+}).extends(Interface1, Interface2, Interface3, ...) 
 ```
 - Example
 ```js
@@ -47,7 +47,7 @@ var List = Interface.define('List', {
 }).extends(Collection); //*****
 
 // you can extends multiple interfaces
-// use .extends(Interface1, Interface2, Interface3, ..., InterfaceN) 
+// use .extends(Interface1, Interface2, Interface3, ...) 
 ```
 <h3>Implements interface</h3>
 Define class (implementation)
@@ -74,10 +74,10 @@ Implementation check
 - Syntax
 ```js
 //return true, if implements all
-Interface.isImplements(class_or_implementation, Interface1, Interface2, Interface3, ..., InterfaceN)
+Interface.isImplements(class_or_implementation, Interface1, Interface2, Interface3, ...)
 
 //throw Error, if not implements all
-Interface.ensureImplements(class_or_implementation, Interface1, Interface2, Interface3, ..., InterfaceN)
+Interface.ensureImplements(class_or_implementation, Interface1, Interface2, Interface3, ...)
 ```
 - Example
 ```js
