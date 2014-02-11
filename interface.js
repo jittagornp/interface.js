@@ -199,11 +199,13 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @throws {Error}
      */
     Interface.ensureImplements = function() {
-        if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
+        var arg0 = arguments[0];
+        
+        if (arguments.length < 2 || !(isFunction(arg0) || isObject(arg0))) {
             throw new Error('Invalid input type parameters, Interface.ensureImplements(<Function | Object> class, Interface interfaces...).');
         }
 
-        var classInstance = isFunction(arguments[0]) ? arguments[0].prototype : arguments[0];
+        var classInstance = isFunction(arg0) ? arg0.prototype : arg0;
         var interfaces = __slice.call(arguments, 1);
 
         //implements multiple interfaces
