@@ -24,7 +24,7 @@ var Collection = Interface.define('Collection', {
     }
 });
 ```
-<h3>Extends interface</h3>
+<h3>Inheritance (Extends) interface</h3>
 - Syntax
 ```js
 var MyInterface = Interface.define(interface_name, {
