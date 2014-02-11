@@ -27,7 +27,7 @@ var Collection = Interface.define('Collection', {
 <h3>Extends interface</h3>
 - Syntax
 ```js
-var MyInterface = Interface.define('INTERFACE_NAME', {
+var MyInterface = Interface.define(interface_name, {
 
    //define prototype as a function
 
@@ -84,7 +84,7 @@ Interface.ensureImplements(class_or_implementation, Interface1, Interface2, Inte
 console.log(Interface.isImplements(ArrayList, Collection)); //true
 
 console.log(Interface.isImplements(ArrayList, List)); //false
-//because it's not implements method set(index, object) of Interface 'List'
+//because it's not implements method set() of interface "List".
 
 Interface.ensureImplements(ArrayList, Collection); //not throw Error
 
