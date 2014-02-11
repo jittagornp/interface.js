@@ -39,14 +39,6 @@
  */
 window.Interface = window.Interface || (function(Array, Object, String, Function, Error, undefined) {
 
-    //define class ImplementsException
-    var ImplementsException = function() {
-        //
-    };
-
-    //extends an Error
-    ImplementsException.prototype = new Error();
-
     // protect old browser not support method trim
     if (!String.prototype.trim) {
         String.prototype.trim = function() {
@@ -119,6 +111,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
         };
     }).call(this);
 
+    //loop object properties
     function forEachProperty(object, callback, context) {
         for (var property in object) {
             if (object.hasOwnProperty(property)) {
@@ -134,7 +127,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * define global Interface
      */
     var Interface = function() {
-        //define interface
+        //
     };
 
 
@@ -146,7 +139,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {String} name
      * @param {Object} prototype
      * 
-     * @throws {Error} - invalid input type parameters
+     * @throws {Error}
      * @returns {Interface} interface
      */
     Interface.define = function(name, prototype) {
@@ -154,8 +147,9 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
             throw new Error('Invalid input type parameters, Interface.define(String name, Object prototype).');
         }
 
+        //define bridge
         var Bridge = function() {
-            //define bridge
+            //
         };
 
         //extends an Interface
@@ -202,8 +196,7 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {Function | Object} class
      * @param {Interface} interfaces.. 
      *
-     * @throws {Error} - invalid input type parameters
-     * @throws {ImplementsException} 
+     * @throws {Error}
      */
     Interface.ensureImplements = function() {
         if (arguments.length < 2 || !(isFunction(arguments[0]) || isObject(arguments[0]))) {
@@ -222,14 +215,14 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
             forEachProperty(interfc.prototype, function(behavior, property) {
                 if (isFunction(behavior)) {
                     if (!isFunction(classInstance[property])) {
-                        throw new ImplementsException('it\'s not implements method ' + property + '() of interface "' + interfc.__interfaceName + '".');
+                        throw new Error('it\'s not implements method ' + property + '() of interface "' + interfc.__interfaceName + '".');
                     }
 
                     var interfaceArgs = FuntionUtils.getArgumentsFromFunction(behavior);
                     var classArgs = FuntionUtils.getArgumentsFromFunction(classInstance[property]);
 
                     if (interfaceArgs.length !== classArgs.length) {
-                        throw new ImplementsException('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.__interfaceName + '".');
+                        throw new Error('it\'s not implements arguments on method ' + property + '(' + interfaceArgs.join(', ') + ') of interface "' + interfc.__interfaceName + '".');
                     }
                 }
             });
@@ -243,18 +236,14 @@ window.Interface = window.Interface || (function(Array, Object, String, Function
      * @param {Function | Object} class
      * @param {Interface} interfaces.. 
      *
-     * @throws {Error} - invalid input type parameters
+     * @throws {Error}
      * @return {Boolean}
      */
     Interface.isImplements = function() {
         try {
             Interface.ensureImplements.apply(this, arguments);
         } catch (ex) {
-            if (ex instanceof ImplementsException) {
-                return false;
-            }
-
-            throw ex;
+            return false;
         }
 
         return true;
