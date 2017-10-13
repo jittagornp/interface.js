@@ -3,7 +3,8 @@ interface.js
 
 for define and check implementation of interface javascript
 <h3>Define interface</h3>
-- Syntax
+- Syntax  
+
 ```js
 var prototype = {
     //define prototype as a function
@@ -11,7 +12,8 @@ var prototype = {
 
 var MyInterface = Interface.define(interface_name, prototype);
 ```
-- Example
+- Example  
+
 ```js
 var Collection = Interface.define('Collection', {
 
@@ -25,7 +27,8 @@ var Collection = Interface.define('Collection', {
 });
 ```
 <h3>Inheritance (Extends) interface</h3>
-- Syntax
+- Syntax  
+
 ```js
 var MyInterface = Interface.define(interface_name, {
 
@@ -33,7 +36,8 @@ var MyInterface = Interface.define(interface_name, {
 
 }).extends(Interface1, Interface2, Interface3, ...) 
 ```
-- Example
+- Example  
+
 ```js
 var List = Interface.define('List', {
     
@@ -50,7 +54,8 @@ var List = Interface.define('List', {
 // use .extends(Interface1, Interface2, Interface3, ...) 
 ```
 <h3>Implements interface</h3>
-Define class (implementation)
+Define class (implementation)  
+
 ```js
 //class ArrayList
 var ArrayList = function(){
@@ -71,7 +76,8 @@ ArrayList.prototype.get = function(index){
 ```
 Implementation check
 <br/>
-- Syntax
+- Syntax  
+
 ```js
 //return true, if implements all
 Interface.isImplements(class_or_implementation, Interface1, Interface2, Interface3, ...)
@@ -79,7 +85,8 @@ Interface.isImplements(class_or_implementation, Interface1, Interface2, Interfac
 //throw Error, if not implements all
 Interface.ensureImplements(class_or_implementation, Interface1, Interface2, Interface3, ...)
 ```
-- Example
+- Example  
+
 ```js
 console.log(Interface.isImplements(ArrayList, Collection)); //true
 
@@ -91,7 +98,8 @@ Interface.ensureImplements(ArrayList, Collection); //not throw Error
 Interface.ensureImplements(ArrayList, List); 
 //throw Error: it's not implements method set() of interface "List".
 ```
-Try again
+Try again  
+
 ```js
 //implements method set
 ArrayList.prototype.set = function(index){
@@ -101,7 +109,8 @@ ArrayList.prototype.set = function(index){
 Interface.ensureImplements(ArrayList, List); 
 //throw Error: it's not implements arguments on method set(index, object) of interface "List".
 ```
-And try again
+And try again  
+
 ```js
 //new implements method set
 ArrayList.prototype.set = function(index, object){ //success
