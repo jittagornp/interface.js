@@ -1,7 +1,9 @@
 interface.js
 ============
 
-for define and check implementation of interface javascript
+> for define and check implementation of interface javascript
+  
+
 <h3>Define interface</h3>
 - Syntax  
 
