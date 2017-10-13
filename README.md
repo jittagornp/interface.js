@@ -5,7 +5,8 @@ interface.js
   
 
 <h3>Define interface</h3>
-- Syntax  
+
+- Syntax    
 
 ```js
 var prototype = {
@@ -14,6 +15,7 @@ var prototype = {
 
 var MyInterface = Interface.define(interface_name, prototype);
 ```
+
 - Example  
 
 ```js
@@ -29,6 +31,7 @@ var Collection = Interface.define('Collection', {
 });
 ```
 <h3>Inheritance (Extends) interface</h3>
+
 - Syntax  
 
 ```js
@@ -38,6 +41,7 @@ var MyInterface = Interface.define(interface_name, {
 
 }).extends(Interface1, Interface2, Interface3, ...) 
 ```
+
 - Example  
 
 ```js
@@ -56,6 +60,7 @@ var List = Interface.define('List', {
 // use .extends(Interface1, Interface2, Interface3, ...) 
 ```
 <h3>Implements interface</h3>
+
 Define class (implementation)  
 
 ```js
@@ -76,8 +81,8 @@ ArrayList.prototype.get = function(index){
    //coding...
 };
 ```
-Implementation check
-<br/>
+Implementation check  
+
 - Syntax  
 
 ```js
@@ -87,6 +92,7 @@ Interface.isImplements(class_or_implementation, Interface1, Interface2, Interfac
 //throw Error, if not implements all
 Interface.ensureImplements(class_or_implementation, Interface1, Interface2, Interface3, ...)
 ```
+
 - Example  
 
 ```js
